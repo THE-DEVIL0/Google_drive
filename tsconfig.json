@@ -13,6 +13,6 @@
     "lib": ["ESNext"],                       // Include the latest ECMAScript features.
     "allowJs": true                          // Allow JavaScript files to be compiled.
   },
-  "include": ["src/app.ts"],  // Include all TypeScript and JavaScript files in src.
+  "include": ["src"],  // Include all TypeScript and JavaScript files in src.
   "exclude": ["node_modules", "dist"]         // Exclude node_modules and dist folders.
 }

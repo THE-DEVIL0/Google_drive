@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "target": "ES6",                        
+      "module": "ESNext",                      
+      "moduleResolution": "node",              
+      "outDir": "./dist/frontend",                      
+      "rootDir": "./src/frontend",                      
+      "strict": true,                          
+      "esModuleInterop": true,                
+      "skipLibCheck": true,                    
+      "forceConsistentCasingInFileNames": true, 
+      "resolveJsonModule": true,               
+      "lib": ["ESNext"],                       
+      "allowJs": true                          
+    },
+    "include": ["src/frontend"],  
+    "exclude": ["node_modules", "dist"]        
+  }
+  

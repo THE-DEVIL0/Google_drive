@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon dist/app.js",
-    "dev": "tsc --watch ",
-    "css":"npx tailwindcss -i ./public/index.css -o ./public/output.css --watch"
+    "dev": "concurrently \"tsc --watch -p tsconfig.json\" \"tsc --watch -p frontendtsconfig.json\"",
+    "css": "npx tailwindcss -i ./public/index.css -o ./public/output.css --watch"
   },
   "keywords": [],
   "author": "",

@@ -7,7 +7,6 @@
     "build:backend": "tsc --watch -p backend/backendconfig.json",
     "build:frontend": "tsc --watch -p frontend/frontendconfig.json",
     "build": "concurrently \" npm run build:backend \" \" npm run build:frontend \" ",
-
     "css": "npx tailwindcss -i ./public/index.css -o ./public/output.css --watch"
   },
   "keywords": [],
@@ -16,7 +15,8 @@
   "description": "",
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

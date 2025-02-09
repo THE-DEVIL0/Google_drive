@@ -1,6 +1,11 @@
 import express, { response } from "express"
 import userRouter from "./routes/user.routes"
 import path from "path"
+import dotenv from "dotenv"
+import connectToDB from "./config/db"
+
+dotenv.config()
+connectToDB()
 
 const app = express()
 

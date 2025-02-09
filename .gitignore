@@ -1,3 +1,5 @@
 node_modules/
 # Ignore Tailwind CSS output file
 public/output.css
+
+.env

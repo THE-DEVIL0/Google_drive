@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [ "./*.html",
-    "./views/**/*.ejs", // Include EJS files if using EJS templating
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./backend/src/views/**/*.ejs", // Include EJS files if using EJS templating
+   "./backend/src/**/*.{js,ts,tsx}", // Backend TypeScript files
+    "./frontend/src/**/*.{js,ts,tsx}",
   './public/**/*.css',],
     
   theme: {

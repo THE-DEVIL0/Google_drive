@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express  from "express"
 import userRouter from "./routes/user.routes"
 import path from "path"
 import dotenv from "dotenv"

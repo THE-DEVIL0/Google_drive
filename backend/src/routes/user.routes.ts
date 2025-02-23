@@ -2,13 +2,12 @@ import express from 'express'
 import {body, validationResult} from 'express-validator'
 import userModel from '../models/user.model'
 import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken"
 
 
 
 const router = express.Router()
-router.get('/', (req, res)=>{
-    res.render('index')
-} )
+
 
 router.get('/register',(req,res)=>{
     res.render('register')
@@ -39,6 +38,7 @@ async (req,res)=>{
         password: hashedPassword
     })
     
+    res.send("User Registered")
     
 })
 
@@ -82,6 +82,19 @@ router.post('/login',
         return
     }
 
+    const token = jwt.sign({
+        userId: user.id,
+        email: user.email,
+        username: user.username
+    },
+        process.env.JWT_SECRET)
+
+    res.cookie('token',token)   
+
+    res.render("Home")
+
 })
+
+
 
 export default router

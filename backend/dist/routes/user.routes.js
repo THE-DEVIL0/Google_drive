@@ -42,38 +42,44 @@ router.post('/register', (0, express_validator_1.body)('username').trim().isLeng
 router.get('/login', (req, res) => {
     res.render('login');
 });
-router.post('/login', (0, express_validator_1.body)('username').trim().isLength({ min: 3 }).withMessage('Username must be atleast 3 charaters long'), (0, express_validator_1.body)('password').trim().isLength({ min: 6 }).withMessage('Password must be atleast 6 chatacters long'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        res.status(400).json({
-            errors: errors.array(),
-            message: 'Invalid data'
-        });
-        return;
+router.post('/login', (0, express_validator_1.body)('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), (0, express_validator_1.body)('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({
+                errors: errors.array(),
+                message: 'Invalid data'
+            });
+            return;
+        }
+        const { username, password } = req.body;
+        const user = yield user_model_1.default.findOne({ username });
+        if (!user) {
+            res.status(400).json({
+                message: "username or password is incorrect"
+            });
+            return;
+        }
+        const isMatch = yield bcrypt_1.default.compare(password, user.password);
+        if (!isMatch) {
+            res.status(400).json({
+                message: "username or password is incorrect"
+            });
+            return;
+        }
+        const token = jsonwebtoken_1.default.sign({
+            userId: user.id,
+            email: user.email,
+            username: user.username
+        }, process.env.JWT_SECRET);
+        res.cookie('token', token);
+        res.render("Home");
     }
-    const { username, password } = req.body;
-    const user = yield user_model_1.default.findOne({
-        username: username
-    });
-    if (!user) {
-        res.status(400).json({
-            message: "username or password is incorrect"
+    catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({
+            message: 'Internal server error'
         });
-        return;
     }
-    const isMatch = yield bcrypt_1.default.compare(password, user.password);
-    if (!isMatch) {
-        res.status(400).json({
-            message: "username or password is incorrect"
-        });
-        return;
-    }
-    const token = jsonwebtoken_1.default.sign({
-        userId: user.id,
-        email: user.email,
-        username: user.username
-    }, process.env.JWT_SECRET);
-    res.cookie('token', token);
-    res.render("Home");
 }));
 exports.default = router;

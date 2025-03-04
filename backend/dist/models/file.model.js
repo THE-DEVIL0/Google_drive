@@ -8,6 +8,14 @@ const fileSchema = new mongoose_1.default.Schema({
     file_url: {
         type: String,
         required: true
+    },
+    file_name: {
+        type: String,
+        required: true
+    },
+    user: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'users'
     }
 });
 const fileModel = mongoose_1.default.model('File', fileSchema);

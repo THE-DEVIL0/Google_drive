@@ -19,7 +19,7 @@ const uploadFile = async (filePath: string) => {
         return result;
     } catch (error) {
         console.error('Error uploading file to Cloudinary:',error);
-        throw new Error(error);
+        throw new Error(error as string);
     }
 };
 

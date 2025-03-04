@@ -35,7 +35,7 @@ router.post('/upload-file', uploader.single('file'), async (req: Request, res: R
             msg: "File uploaded successfully",
             url: newFile
         });
-    } catch (error) {
+    } catch (error : any) {
         console.error('Error uploading file:', error);
         return res.status(500).json({ errors: error.message });
     }

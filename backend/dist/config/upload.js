@@ -8,8 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const cloudinary_1 = require("cloudinary");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 cloudinary_1.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -17,12 +22,16 @@ cloudinary_1.v2.config({
 });
 const uploadFile = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield cloudinary_1.v2.uploader.upload(filePath);
+        const result = yield cloudinary_1.v2.uploader.upload(filePath, {
+            resource_type: 'raw', // Allows PDFs, DOCX, ZIP, etc.
+            unique_filename: true
+        });
         console.log(result);
         return result;
     }
     catch (error) {
-        console.log(error.message);
+        console.error('Error uploading file to Cloudinary:', error);
+        throw new Error(error);
     }
 });
 exports.default = uploadFile;

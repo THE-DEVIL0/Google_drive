@@ -1,47 +1,44 @@
-import express from 'express';
-import uploadFile from '../config/upload';
+import express, { Request, Response } from 'express';
 import multer from 'multer';
+import uploadFile from '../config/upload';
 import fileModel from '../models/file.model';
 
-const uploader = multer({
-    storage: multer.diskStorage({}),
-    limits: {fileSize: 1000000},
-})
+const uploader = multer({ storage: multer.diskStorage({}) });
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', (req, res)=>{
-    res.render('index')
-} )
+router.get('/', (req: Request, res: Response) => {
+    res.render('index');
+});
 
-router.get('/home', (req,res)=>{
-    res.render('Home')
-})
+router.get('/home', (req: Request, res: Response) => {
+    res.render('Home');
+});
 
-router.post('/upload-file', uploader.single('file'), async (req,res)=>{
-    try{
-        const file = req.file
-        if(!file){
-            res.status(400).json({
-                errors: 'Please provide a file'
-            })
-            return
+router.post('/upload-file', uploader.single('file'), async (req: Request, res: Response): Promise<any> => {
+    try {
+        const file = req.file;
+        if (!file || !file.path) {
+            return res.status(400).json({ errors: 'Please provide a valid file' });
         }
-    const result = await uploadFile(file.path)
 
-    const newFile = await fileModel.create({
-        file_url: result?.secure_url
-    })
-    res.send({success: true, msg: "File uploaded successfully", url: newFile})
-    
+        const result = await uploadFile(file.path);
+        if (!result || !result.secure_url) {
+            return res.status(500).json({ errors: 'File upload failed',result });
+            
+        }
+
+        const newFile = await fileModel.create({ file_url: result.secure_url });
+
+        return res.status(200).json({
+            success: true,
+            msg: "File uploaded successfully",
+            url: newFile
+        });
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        return res.status(500).json({ errors: error.message });
     }
-    catch(error){
-console.log(error.message);
+});
 
-    }
-})
-
-
-
-
-export default router  
+export default router;

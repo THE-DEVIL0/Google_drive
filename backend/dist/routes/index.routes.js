@@ -22,12 +22,18 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => {
     res.render('index');
 });
-router.get('/home', auth_1.default, (req, res) => {
-    res.render('Home');
-});
+router.get('/home', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userFiles = yield file_model_1.default.find({
+        user: req.user.userId
+    });
+    res.render('Home', {
+        files: userFiles
+    });
+}));
 router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const file = req.file;
+        const id = req.user.userId;
         if (!file || !file.path) {
             return res.status(400).json({ errors: 'Please provide a valid file' });
         }
@@ -38,7 +44,7 @@ router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) 
         const newFile = yield file_model_1.default.create({
             file_url: result.secure_url,
             file_name: file.originalname,
-            user: req.user.userId
+            user: id
         });
         return res.status(200).json({
             success: true,

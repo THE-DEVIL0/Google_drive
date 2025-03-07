@@ -17,8 +17,27 @@
 
 <body class="bg-slate-800">
     <main class=" p-4">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Upload file</button>
-    
+        <div class="flex items-center gap-3 justify-center mb-5 mt-1">
+            
+        <button class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Upload file</button>
+
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Show files</button>
+    </div>
+
+
+    <div class="files">
+        <% files.forEach(file =>{  %> 
+            <div class="max-w-xs mx-auto bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                <div class="relative">
+                  <img src="<%= file.file_url %>" alt="<%= file.file_name %>" class="w-full h-48 object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 hover:opacity-70 transition-opacity duration-300"></div>
+                </div>
+                <div class="p-4 flex justify-between  bg-slate-600">
+                  <h2 class="text-lg font-semibold text-white"><%= file.file_name  %></h2>
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download</button>
+                </div>
+        <%   })  %>
+    </div>
 
     
 

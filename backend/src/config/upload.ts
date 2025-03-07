@@ -12,7 +12,7 @@ cloudinary.config({
 const uploadFile = async (filePath: string) => {
     try {
         const result = await cloudinary.uploader.upload(filePath, {
-            resource_type: 'raw', // Allows PDFs, DOCX, ZIP, etc.
+             // Allows PDFs, DOCX, ZIP, etc.
             unique_filename: true
         });
         console.log(result);

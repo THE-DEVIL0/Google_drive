@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import multer from 'multer';
 import uploadFile from '../config/upload';
 import fileModel from '../models/file.model';
+import auth from '../middlewares/auth';
 
 const uploader = multer({ storage: multer.diskStorage({}) });
 
@@ -11,11 +12,11 @@ router.get('/', (req: Request, res: Response) => {
     res.render('index');
 });
 
-router.get('/home', (req: Request, res: Response) => {
+router.get('/home',auth, (req: Request, res: Response) => {
     res.render('Home');
 });
 
-router.post('/upload-file', uploader.single('file'), async (req: Request, res: Response): Promise<any> => {
+router.post('/upload-file',auth, uploader.single('file'), async (req: any, res: Response): Promise<any> => {
     try {
         const file = req.file;
         if (!file || !file.path) {
@@ -28,7 +29,11 @@ router.post('/upload-file', uploader.single('file'), async (req: Request, res: R
             
         }
 
-        const newFile = await fileModel.create({ file_url: result.secure_url });
+        const newFile = await fileModel.create({
+             file_url: result.secure_url,
+             file_name: file.originalname,
+             user: req.user.userId
+             });
 
         return res.status(200).json({
             success: true,

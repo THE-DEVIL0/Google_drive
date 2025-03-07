@@ -73,7 +73,7 @@ router.post('/login', (0, express_validator_1.body)('username').trim().isLength(
             username: user.username
         }, process.env.JWT_SECRET);
         res.cookie('token', token);
-        res.render("Home");
+        res.redirect("/home");
     }
     catch (error) {
         console.error('Error during login:', error);

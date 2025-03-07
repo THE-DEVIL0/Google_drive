@@ -85,7 +85,7 @@ router.post('/login',
 
             res.cookie('token', token);
 
-            res.render("Home");
+            res.redirect("/home");
         } catch (error) {
             console.error('Error during login:', error);
             res.status(500).json({

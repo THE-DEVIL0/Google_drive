@@ -16,15 +16,16 @@ const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const upload_1 = __importDefault(require("../config/upload"));
 const file_model_1 = __importDefault(require("../models/file.model"));
+const auth_1 = __importDefault(require("../middlewares/auth"));
 const uploader = (0, multer_1.default)({ storage: multer_1.default.diskStorage({}) });
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
     res.render('index');
 });
-router.get('/home', (req, res) => {
+router.get('/home', auth_1.default, (req, res) => {
     res.render('Home');
 });
-router.post('/upload-file', uploader.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const file = req.file;
         if (!file || !file.path) {
@@ -34,7 +35,11 @@ router.post('/upload-file', uploader.single('file'), (req, res) => __awaiter(voi
         if (!result || !result.secure_url) {
             return res.status(500).json({ errors: 'File upload failed', result });
         }
-        const newFile = yield file_model_1.default.create({ file_url: result.secure_url });
+        const newFile = yield file_model_1.default.create({
+            file_url: result.secure_url,
+            file_name: file.originalname,
+            user: req.user.userId
+        });
         return res.status(200).json({
             success: true,
             msg: "File uploaded successfully",

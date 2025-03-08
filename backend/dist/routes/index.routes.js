@@ -59,23 +59,51 @@ router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) 
     }
 }));
 router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const loggedInUser = req.user.userId;
-    const fileUrl = req.params.url;
-    const file = yield file_model_1.default.findOne({
-        user: loggedInUser,
-        file_url: fileUrl
-    });
-    if (!file) {
-        return res.status(404).json({
-            message: "Unauthorized"
+    try {
+        const loggedInUser = req.user.userId;
+        const fileUrl = req.params.url;
+        // Find the file in the database
+        const file = yield file_model_1.default.findOne({
+            user: loggedInUser,
+            file_url: fileUrl
+        });
+        if (!file) {
+            return res.status(404).json({
+                success: false,
+                message: "File not found or unauthorized access."
+            });
+        }
+        // Fetch the file from the remote server (e.g., Cloudinary)
+        const response = yield axios_1.default.get(file.file_url, { responseType: 'stream' });
+        // Set headers for file download
+        res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
+        res.setHeader('Content-Type', response.headers['content-type']);
+        // Stream the file to the client
+        response.data.pipe(res);
+        // Handle stream errors
+        response.data.on('error', (streamError) => {
+            console.error('Stream error:', streamError);
+            return res.status(500).json({
+                success: false,
+                message: 'Error occurred while streaming the file.'
+            });
         });
     }
-    // Fetch the file from Cloudinary (or another storage)
-    const response = yield axios_1.default.get(file.file_url, { responseType: 'stream' });
-    // Set headers for file download
-    res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
-    res.setHeader('Content-Type', response.headers['content-type']);
-    // Stream the file to the client
-    response.data.pipe(res);
+    catch (error) {
+        console.error('Error during file download:', error);
+        // Handle Axios-specific errors
+        if (axios_1.default.isAxiosError(error)) {
+            return res.status(500).json({
+                success: false,
+                message: 'Error fetching the file from the remote server.',
+                details: error.message
+            });
+        }
+        // Generic fallback for unexpected errors
+        return res.status(500).json({
+            success: false,
+            message: 'An unexpected error occurred while processing your request.',
+        });
+    }
 }));
 exports.default = router;

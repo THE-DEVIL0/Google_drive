@@ -6,85 +6,78 @@
     <title>Home Page</title>
 
     <link href="/output.css" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
-
-    <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"/>
-
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
 <body class="bg-slate-800">
-    <main class=" p-4">
+    <main class="p-4">
         <div class="flex items-center gap-3 justify-center mb-5 mt-1">
-            
-        <button class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Upload file</button>
-
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Show files</button>
-    </div>
-
-
-    <div class="files">
-        <% files.forEach(file =>{  %> 
-            <div class="max-w-xs mx-auto bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-                <div class="relative">
-                  <img src="<%= file.file_url %>" alt="<%= file.file_name %>" class="w-full h-48 object-cover">
-                  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 hover:opacity-70 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-4 flex justify-between  bg-slate-600">
-                  <h2 class="text-lg font-semibold text-white"><%= file.file_name  %></h2>
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download</button>
-                </div>
-        <%   })  %>
-    </div>
-
-    
-
-    <div class="pop hidden fixed top-0 left-0 h-screen w-screen items-center justify-center">
-
-<form action="/upload-file" method="post" enctype="multipart/form-data">
-        
-<div class="flex items-center justify-center w-96">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+            <button class="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded" onclick="showPop()">Upload file</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="showFiles()">Show files</button>
         </div>
-        <input id="dropzone-file" type="file" class="hidden" name="file" />
-    </label>
-</div> 
 
-<div class="flex items-center justify-center my-5">
-    <button class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Select file</button>
-</div>
+        <div class="files hidden gap-3 flex-col">
+            <% files.forEach(file => { %> 
+                <div class="  w-[90vw] mx-4  bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl  ">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black opacity-50 hover:opacity-70 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-4 flex justify-between bg-slate-600">
+                        <h2 class="text-lg font-semibold text-white"><%= file.file_name %></h2>
+                        <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" href="/download/<%= encodeURIComponent(file.file_url) %>" download="<%= file.file_name %>">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>            
+        </div>
 
-</form>
-
-<button class="bg-gray-600 m-5 hover:bg-gray-700  text-gray-500font-bold py-2 px-4 rounded" onclick="hidePop()"><i class="ri-close-large-line"></i></button>
-
-</div>
-
-
-    
-</main>
-     
+        <div class="pop hidden fixed  w-screen items-center justify-center">
+            <form action="/upload-file" method="post" enctype="multipart/form-data">
+                <div class="flex items-center justify-center w-96">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span class="font-semibold">Click to upload</span> or drag and drop
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" name="file" />
+                    </label>
+                </div>
+                <div class="flex items-center justify-center my-5">
+                    <button class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Select file</button>
+                </div>
+            </form>
+            <button class="bg-gray-600 m-5 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onclick="hidePop()">
+                <i class="ri-close-large-line"></i>
+            </button>
+        </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
-
-
     <script>
-        const showPop = ()=>{
-            document.querySelector('.pop').classList.remove('hidden')
-            document.querySelector('.pop').classList.add('flex')
+        const showPop = () => {
+            document.querySelector('.pop').classList.remove('hidden');
+            document.querySelector('.pop').classList.add('flex');
+            document.querySelector('.files').classList.add('hidden');
         }
 
-        const hidePop =()=>{
-            document.querySelector('.pop').classList.add('hidden')
+        const hidePop = () => {
+            document.querySelector('.pop').classList.add('hidden');
+        }
+
+        const showFiles = () => {
+            document.querySelector('.files').classList.remove('hidden');
+            document.querySelector('.pop').classList.add('hidden');
+            document.querySelector('.files').classList.add('flex')
         }
     </script>
 </body>
-</html> 
+</html>

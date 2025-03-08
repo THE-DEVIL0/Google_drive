@@ -3,6 +3,7 @@ import multer from 'multer';
 import uploadFile from '../config/upload';
 import fileModel from '../models/file.model';
 import auth from '../middlewares/auth';
+import axios from 'axios';
 
 interface CustomRequest extends Request{
     user?: any
@@ -56,4 +57,31 @@ router.post('/upload-file',auth, uploader.single('file'), async (req: CustomRequ
     }
 });
 
+router.get('/download/:url',auth, async (req: CustomRequest, res: Response): Promise<any> =>{
+   const loggedInUser = req.user.userId;
+   const fileUrl= req.params.url;
+   const file = await fileModel.findOne({
+    user: loggedInUser,
+    file_url: fileUrl
+   }) 
+
+   if(!file){
+    return res.status(404).json({
+        message: "Unauthorized"
+    })
+   }
+
+     // Fetch the file from Cloudinary (or another storage)
+     const response = await axios.get(file.file_url, { responseType: 'stream' });
+
+     // Set headers for file download
+     res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
+     res.setHeader('Content-Type', response.headers['content-type']);
+
+     // Stream the file to the client
+     response.data.pipe(res);
+
+
+
+})
 export default router;

@@ -12,14 +12,14 @@ cloudinary.config({
 const uploadFile = async (filePath: string) => {
     try {
         const result = await cloudinary.uploader.upload(filePath, {
-             // Allows PDFs, DOCX, ZIP, etc.
+            resource_type: 'auto', // Automatically detect the file type (image, video, raw)
             unique_filename: true
         });
         console.log(result);
         return result;
     } catch (error) {
-        console.error('Error uploading file to Cloudinary:',error);
-        throw new Error(error as string);
+        console.error('Error uploading file to Cloudinary:', error);
+        throw new Error('File upload failed');
     }
 };
 

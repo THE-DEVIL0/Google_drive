@@ -23,7 +23,7 @@ cloudinary_1.v2.config({
 const uploadFile = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield cloudinary_1.v2.uploader.upload(filePath, {
-            // Allows PDFs, DOCX, ZIP, etc.
+            resource_type: 'auto', // Automatically detect the file type (image, video, raw)
             unique_filename: true
         });
         console.log(result);
@@ -31,7 +31,7 @@ const uploadFile = (filePath) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         console.error('Error uploading file to Cloudinary:', error);
-        throw new Error(error);
+        throw new Error('File upload failed');
     }
 });
 exports.default = uploadFile;

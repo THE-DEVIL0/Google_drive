@@ -17,6 +17,7 @@ const multer_1 = __importDefault(require("multer"));
 const upload_1 = __importDefault(require("../config/upload"));
 const file_model_1 = __importDefault(require("../models/file.model"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
+const axios_1 = __importDefault(require("axios"));
 const uploader = (0, multer_1.default)({ storage: multer_1.default.diskStorage({}) });
 const router = express_1.default.Router();
 router.get('/', (req, res) => {
@@ -56,5 +57,25 @@ router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) 
         console.error('Error uploading file:', error);
         return res.status(500).json({ errors: error.message });
     }
+}));
+router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const loggedInUser = req.user.userId;
+    const fileUrl = req.params.url;
+    const file = yield file_model_1.default.findOne({
+        user: loggedInUser,
+        file_url: fileUrl
+    });
+    if (!file) {
+        return res.status(404).json({
+            message: "Unauthorized"
+        });
+    }
+    // Fetch the file from Cloudinary (or another storage)
+    const response = yield axios_1.default.get(file.file_url, { responseType: 'stream' });
+    // Set headers for file download
+    res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
+    res.setHeader('Content-Type', response.headers['content-type']);
+    // Stream the file to the client
+    response.data.pipe(res);
 }));
 exports.default = router;

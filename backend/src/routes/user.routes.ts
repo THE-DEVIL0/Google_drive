@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 router.get('/register', (req: Request, res: Response) => {
-    res.render('register');
+    res.render('Sign_in/register');
 });
 
 router.post('/register',
@@ -39,7 +39,7 @@ router.post('/register',
 );
 
 router.get('/login', (req: Request, res: Response) => {
-    res.render('login');
+    res.render('Sign_in/login');
 });
 
 router.post('/login',

@@ -19,7 +19,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = express_1.default.Router();
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('Sign_in/register');
 });
 router.post('/register', (0, express_validator_1.body)('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), (0, express_validator_1.body)('email').trim().isEmail().withMessage('Please enter a valid email address'), (0, express_validator_1.body)('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
@@ -40,7 +40,7 @@ router.post('/register', (0, express_validator_1.body)('username').trim().isLeng
     res.send("User Registered");
 }));
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('Sign_in/login');
 });
 router.post('/login', (0, express_validator_1.body)('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), (0, express_validator_1.body)('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

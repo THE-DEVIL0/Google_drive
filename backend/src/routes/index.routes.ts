@@ -21,7 +21,7 @@ router.get('/home',auth, async (req: CustomRequest, res: Response) => {
     const userFiles = await fileModel.find({
         user:req.user.userId
     })
-    res.render('Home',{
+    res.render('home',{
         files:userFiles
     });
 });

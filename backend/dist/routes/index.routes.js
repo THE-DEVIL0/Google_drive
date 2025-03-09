@@ -27,7 +27,7 @@ router.get('/home', auth_1.default, (req, res) => __awaiter(void 0, void 0, void
     const userFiles = yield file_model_1.default.find({
         user: req.user.userId
     });
-    res.render('Home', {
+    res.render('home', {
         files: userFiles
     });
 }));

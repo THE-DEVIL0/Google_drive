@@ -16,6 +16,13 @@ const router = express.Router();
 router.get('/', (req: Request, res: Response) => {
     res.render('index');
 });
+router.get('/privacy', (req: Request, res : Response)=>{
+    res.render('Legal/privacy')
+})
+
+router.get('/terms', (req: Request, res : Response)=>{
+    res.render('Legal/terms')
+})
 
 router.get('/home',auth, async (req: CustomRequest, res: Response) => {
     const userFiles = await fileModel.find({

@@ -23,6 +23,12 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => {
     res.render('index');
 });
+router.get('/privacy', (req, res) => {
+    res.render('Legal/privacy');
+});
+router.get('/terms', (req, res) => {
+    res.render('Legal/terms');
+});
 router.get('/home', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userFiles = yield file_model_1.default.find({
         user: req.user.userId

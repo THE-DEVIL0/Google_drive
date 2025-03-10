@@ -7,31 +7,56 @@
     <link href="/output.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
 </head>
-<body class="bg-slate-800">
-    
+<body class="bg-slate-800 min-h-screen flex justify-center items-center">
 
-<form class="max-w-md mx-auto" action="/user/login" method="post">
-
-    
-    <div class="relative z-0 w-full my-5 group">
-        <input type="text" name="username" id="username" class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="username" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-5 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Username</label>
-    </div>
+    <div class="bg-slate-700 shadow-2xl rounded-lg p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-blue-500 text-center mb-8">Login</h1>
         
+        <form action="/user/login" method="post">
+            <!-- Username Field -->
+            <div class="relative z-0 w-full mb-8 group">
+                <input type="text" name="username" id="username" 
+                    class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:border-blue-500 focus:outline-none focus:ring-0 peer" 
+                    placeholder=" " required />
+                <label for="username" 
+                    class="peer-focus:font-medium absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                        </svg>
+                        Username
+                    </div>
+                </label>
+            </div>
 
-    
+            <!-- Password Field -->
+            <div class="relative z-0 w-full mb-8 group">
+                <input type="password" name="password" id="password" 
+                    class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-400 appearance-none focus:border-blue-500 focus:outline-none focus:ring-0 peer" 
+                    placeholder=" " required />
+                <label for="password" 
+                    class="peer-focus:font-medium absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <svg class="w-10 h-10 absolute top-0.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" fill="currentColor" viewBox="0 0 256 256" xml:space="preserve">
+                            <path d="M 65.009 40.127 c -2.209 0 -4 -1.791 -4 -4 V 22.363 C 61.009 14.443 54.565 8 46.646 8 h -3.291 c -7.92 0 -14.363 6.443 -14.363 14.363 v 13.764 c 0 2.209 -1.791 4 -4 4 s -4 -1.791 -4 -4 V 22.363 C 20.991 10.032 31.023 0 43.354 0 h 3.291 c 12.331 0 22.363 10.032 22.363 22.363 v 13.764 C 69.009 38.336 67.218 40.127 65.009 40.127 z" />
+                            <path d="M 68.483 32.127 H 21.517 c -5.468 0 -9.917 4.448 -9.917 9.916 v 38.041 c 0 5.468 4.449 9.916 9.917 9.916 h 46.967 c 5.468 0 9.916 -4.448 9.916 -9.916 V 42.043 C 78.399 36.576 73.951 32.127 68.483 32.127 z M 55.36 74.118 c 0 0.46 -0.373 0.833 -0.833 0.833 H 35.473 c -0.46 0 -0.833 -0.373 -0.833 -0.833 v -4.208 c 0 -4.133 3.1 -7.57 7.088 -8.121 c -1.869 -1.121 -3.13 -3.162 -3.13 -5.488 v -3.225 c 0 -3.521 2.881 -6.402 6.402 -6.402 s 6.402 2.881 6.402 6.402 v 3.225 c 0 2.326 -1.261 4.367 -3.13 5.488 c 3.988 0.551 7.088 3.987 7.088 8.121 V 74.118 z"/>
+                        </svg>
+                        <p class="pl-7">Password</p>
+                    </div>
+                </label>
+            </div>
 
-    <div class="relative z-0 w-full mb-5 group">
-        <input type="password" name="password" id="password" class="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-        <label for="password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-5 scale-75 top-5 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+            <!-- Submit Button -->
+            <button type="submit" 
+                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg w-full py-2.5">
+                Sign In
+            </button>
+
+            <p class="text-center text-gray-400 mt-4">
+                New User? <a href="/user/register" class="text-blue-400 hover:underline">Register Now</a>
+            </p>
+        </form>
     </div>
-   
-    
-   
-    </div>
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-  </form>
-  
 
 
 

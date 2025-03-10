@@ -6,13 +6,17 @@
     <title>Terms & Conditions - CloudKeep</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-slate-800 text-gray-900">
 
     <!-- Navbar -->
-    <%- include('partials/navbar') %>
+     <header>
+        <%- include('../reuse/navbar') %>
+     </header>
+    
 
     <!-- Page Content -->
-    <div class="max-w-4xl mx-auto py-10 px-5 bg-white shadow-lg rounded-lg">
+     <main class="py-14">
+    <div class="min-w-full mx-auto py-10 px-5 bg-white shadow-lg rounded-lg">
         <h1 class="text-4xl font-bold text-blue-600 mb-6">Terms & Conditions</h1>
         <p class="text-gray-500 text-sm mb-6">Effective Date: <span class="font-semibold">[March 8, 2025]</span></p>
 
@@ -100,10 +104,11 @@
             <li><span class="font-semibold">Mailing Address:</span> [Faizabad, Islamabad, Pakistan]</li>
         </ul>
     </div>
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4 mt-10">
-        <p>&copy; 2025 CloudKeep. All rights reserved.</p>
+    
+    <footer>
+        <%- include('../reuse/footer') %>
     </footer>
 
 </body>

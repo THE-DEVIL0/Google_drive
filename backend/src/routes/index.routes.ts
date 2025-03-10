@@ -93,7 +93,7 @@ router.get('/download/:url', auth, async (req: CustomRequest, res: Response): Pr
         response.data.pipe(res);
 
         // Handle stream errors
-        response.data.on('error', (streamError) => {
+        response.data.on('error', (streamError:any) => {
             console.error('Stream error:', streamError);
             return res.status(500).json({
                 success: false,

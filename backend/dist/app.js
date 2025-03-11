@@ -21,6 +21,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../public")));
 app.use('/user', user_routes_1.default);
 app.use('/', index_routes_1.default);
+process.on('uncaughtException', (err) => {
+    console.log(err.name, err.message);
+});
 app.listen(3000, () => {
     console.log("Server is running on Port 3000");
 });

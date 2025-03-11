@@ -17,16 +17,16 @@
     <main class="pt-20">
 
         <section id="Home">
-            <form action="/user/register" method="get">
-                <button type="submit"  class="text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
+            <div>
+                <button id="open-register"  class=" text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
                      Register User
                     </button>
-                </form>
-                <form action="/user/login" method="get">
-                    <button type="submit"  class="text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
+                </div>
+                <div>
+                    <button  id="open-login"  class=" text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
                          Login
                         </button>
-                    </form>
+                    </div>
         </section>
 
 
@@ -39,6 +39,10 @@
         </section>
         
         </main>
+        <div id="login-modal" class="hidden fixed inset-0 items-center justify-center bg-black bg-opacity-50 ">
+            </div>
+            <div id="register-modal" class="hidden fixed inset-0 items-center justify-center bg-black bg-opacity-50 ">
+        </div>
 
 
 
@@ -60,5 +64,47 @@
 
 
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>    
+        <script>
+            const loginModal = document.getElementById("login-modal");
+    const openLoginButton = document.getElementById("open-login");
+
+    openLoginButton.addEventListener("click", async () => {
+        const response = await fetch('/user/login'); // Load the login.ejs file
+        const html = await response.text();
+        loginModal.innerHTML = html;
+        loginModal.classList.remove("hidden");
+        loginModal.classList.add("flex");
+
+        // Close Modal on click outside
+        loginModal.addEventListener("click", (e) => {
+            if (e.target === loginModal ) {
+                loginModal.classList.add("hidden");
+                loginModal.classList.remove("flex");
+                loginModal.innerHTML = ""; // Clear the modal content
+            }
+        });
+    }); 
+
+    const registerModal = document.getElementById("register-modal");
+    const openRegisterButton = document.getElementById("open-register");
+
+    openRegisterButton.addEventListener("click", async () => {
+        const response = await fetch('/user/register'); // Load the login.ejs file
+        const html = await response.text();
+        registerModal.innerHTML = html;
+        registerModal.classList.remove("hidden");
+        registerModal.classList.add("flex");
+
+        // Close Modal on click outside
+        registerModal.addEventListener("click", (e) => {
+            if (e.target === registerModal ) {
+                registerModal.classList.add("hidden");
+                regiserModal.classList.remove("flex");
+                registerModal.innerHTML = ""; // Clear the modal content
+            }
+        });
+    }); 
+
+        </script>
 </body>
 </html>

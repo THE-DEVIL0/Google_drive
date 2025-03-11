@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import connectToDB from "./config/db"
 import cookieParser from "cookie-parser"
 import indexRouter from "./routes/index.routes"
+import { log } from "console"
 
 dotenv.config()
 connectToDB()
@@ -26,7 +27,10 @@ app.use('/user', userRouter)
 app.use('/', indexRouter)
 
 
-
+process.on('uncaughtException',(err)=>{
+    console.log(err.name , err.message);
+    
+})
 
 app.listen(3000, ()=>{
     console.log("Server is running on Port 3000");

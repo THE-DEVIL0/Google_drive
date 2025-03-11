@@ -1,20 +1,18 @@
+
 import mongoose from "mongoose";
+import getenv from "../constants/env";
 
-const connectToDB = () => {
-    const mongoUri = process.env.MONGO_URI;
-    if (!mongoUri) {
-        console.error('MONGO_URI environment variable is not set');
-        process.exit(1);
-    }
-
-    mongoose.connect(mongoUri)
-        .then(() => {
-            console.log('Connected to MongoDB');
-        })
-        .catch((error) => {
+const connectToDB = async () => {
+    const mongoUri = getenv('MONGO_URI')
+try{
+    await  mongoose.connect(mongoUri)
+}
+        catch(error) {
             console.error('Error connecting to MongoDB:', error);
             process.exit(1);
-        });
+        };
+      console.log("Connected to MongoDB");
+        
 };
 
 export default connectToDB;

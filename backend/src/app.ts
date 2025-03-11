@@ -5,7 +5,7 @@ import dotenv from "dotenv"
 import connectToDB from "./config/db"
 import cookieParser from "cookie-parser"
 import indexRouter from "./routes/index.routes"
-import { log } from "console"
+
 
 dotenv.config()
 connectToDB()

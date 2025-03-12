@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TooManyRequests = exports.UnprocessableEntity = exports.Conflict = exports.ServiceUnavailable = exports.NotImplemented = exports.InternalServerError = exports.NotFound = exports.Forbidden = exports.Unauthorized = exports.BadRequest = exports.Created = exports.OK = void 0;
+exports.OK = 200;
+exports.Created = 201;
+exports.BadRequest = 400;
+exports.Unauthorized = 401;
+exports.Forbidden = 403;
+exports.NotFound = 404;
+exports.InternalServerError = 500;
+exports.NotImplemented = 501;
+exports.ServiceUnavailable = 503;
+exports.Conflict = 409;
+exports.UnprocessableEntity = 422;
+exports.TooManyRequests = 429;

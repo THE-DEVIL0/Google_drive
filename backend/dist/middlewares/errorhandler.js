@@ -12,11 +12,11 @@ const handleZodError = (error, res) => {
         errors
     });
 };
-const errorHanlder = (error, req, res, next) => {
+const errorHanlder = (error, req, res, next, errorType) => {
     console.log(`Path: ${req.path} , Error ${error.name} , Message: ${error.message}`);
     if (error instanceof zod_1.z.ZodError) {
         return handleZodError(error, res);
     }
-    res.status(500).send(`${https_1.InternalServerError}`);
+    res.status(errorType || https_1.InternalServerError);
 };
 exports.default = errorHanlder;

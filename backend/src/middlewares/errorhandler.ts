@@ -14,13 +14,13 @@ return res.status(BadRequest).json({
 }
 
 
-const errorHanlder: ErrorRequestHandler= (error, req, res, next) => {
+const errorHanlder: ErrorRequestHandler= (error, req, res, next , errorType?) => {
 
     console.log(`Path: ${req.path} , Error ${error.name} , Message: ${error.message}`);
     if(error instanceof z.ZodError){
         return handleZodError(error,res)
     }
-    res.status(500).send(`${InternalServerError}`)
+    res.status(errorType||InternalServerError)
 
 }
 

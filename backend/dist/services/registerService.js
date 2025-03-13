@@ -9,12 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const catcherror = (controller) => (res, req, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield controller(res, req, next);
-    }
-    catch (error) {
-        next(error);
-    }
+exports.CreateAccount = void 0;
+const CreateAccount = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
-exports.default = catcherror;
+exports.CreateAccount = CreateAccount;

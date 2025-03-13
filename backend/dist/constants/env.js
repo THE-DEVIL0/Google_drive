@@ -1,11 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const getenv = (constant, defaultValue) => {
-    const value = process.env[constant] || constant;
+    const value = process.env[constant] || defaultValue;
     if (!value) {
-        if (defaultValue) {
-            return defaultValue;
-        }
         throw new Error(`Environment variable ${constant}  is not set`);
     }
     return value;

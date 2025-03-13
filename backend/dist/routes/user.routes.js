@@ -17,19 +17,12 @@ const express_validator_1 = require("express-validator");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const registerController_1 = require("../Controllers/registerController");
 const router = express_1.default.Router();
 router.get('/register', (req, res) => {
     res.render('Sign_in/register');
 });
-router.post('/register', (0, express_validator_1.body)('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), (0, express_validator_1.body)('email').trim().isEmail().withMessage('Please enter a valid email address'), (0, express_validator_1.body)('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        res.status(400).json({
-            errors: errors.array(),
-            message: 'Invalid data'
-        });
-        return;
-    }
+router.post('/register', registerController_1.registerController, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(password, 10);
     const newUser = yield user_model_1.default.create({

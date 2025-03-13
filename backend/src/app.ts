@@ -11,7 +11,7 @@ import errorHanlder from "./middlewares/errorhandler"
 
 
 dotenv.config()
-connectToDB()
+
 
 const app = express()
 
@@ -45,8 +45,9 @@ process.on('uncaughtException',(err)=>{
     
 })
 
-app.listen(3000, ()=>{
+app.listen(3000, async()=>{
     console.log("Server is running on Port 3000");
+    await connectToDB()
     
 })
 

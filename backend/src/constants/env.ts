@@ -1,11 +1,8 @@
 const getenv = (constant : string , defaultValue? : string) : string =>{
 
-    const value =  process.env[constant] || constant
+    const value =  process.env[constant] || defaultValue
 
     if(!value){
-        if(defaultValue){
-            return defaultValue
-        }
         throw new Error(`Environment variable ${constant}  is not set`)
     }
 

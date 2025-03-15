@@ -1,6 +1,6 @@
 
 import mongoose from "mongoose";
-import getenv from "../constants/env";
+import getenv from "../constants/env.js"; // Added .js for ES Module compatibility
 
 const connectToDB = async () => {
     const mongoUri = getenv('MONGO_URI')
@@ -16,3 +16,5 @@ try{
 };
 
 export default connectToDB;
+
+

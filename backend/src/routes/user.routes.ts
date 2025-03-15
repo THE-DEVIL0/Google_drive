@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import userModel from '../models/user.model';
+import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { registerController } from '../Controllers/registerController';
+import { registerController } from '../Controllers/registerController.js';
 
 const router = express.Router();
 

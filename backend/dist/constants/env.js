@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const getenv = (constant, defaultValue) => {
     const value = process.env[constant] || defaultValue;
     if (!value) {
@@ -7,4 +5,4 @@ const getenv = (constant, defaultValue) => {
     }
     return value;
 };
-exports.default = getenv;
+export default getenv;

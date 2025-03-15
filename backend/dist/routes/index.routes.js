@@ -1,25 +1,11 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const multer_1 = __importDefault(require("multer"));
-const upload_1 = __importDefault(require("../config/upload"));
-const file_model_1 = __importDefault(require("../models/file.model"));
-const auth_1 = __importDefault(require("../middlewares/auth"));
-const axios_1 = __importDefault(require("axios"));
-const uploader = (0, multer_1.default)({ storage: multer_1.default.diskStorage({}) });
-const router = express_1.default.Router();
+import express from 'express';
+import multer from 'multer';
+import uploadFile from '../config/upload.js';
+import fileModel from '../models/file.model.js';
+import auth from '../middlewares/auth.js';
+import axios from "axios";
+const uploader = multer({ storage: multer.diskStorage({}) });
+const router = express.Router();
 router.get('/', (req, res) => {
     res.render('index');
 });
@@ -29,26 +15,26 @@ router.get('/privacy', (req, res) => {
 router.get('/terms', (req, res) => {
     res.render('Legal/terms');
 });
-router.get('/home', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userFiles = yield file_model_1.default.find({
+router.get('/home', auth, async (req, res) => {
+    const userFiles = await fileModel.find({
         user: req.user.userId
     });
     res.render('home', {
         files: userFiles
     });
-}));
-router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
+router.post('/upload-file', auth, uploader.single('file'), async (req, res) => {
     try {
         const file = req.file;
         const id = req.user.userId;
         if (!file || !file.path) {
             return res.status(400).json({ errors: 'Please provide a valid file' });
         }
-        const result = yield (0, upload_1.default)(file.path);
+        const result = await uploadFile(file.path);
         if (!result || !result.secure_url) {
             return res.status(500).json({ errors: 'File upload failed', result });
         }
-        const newFile = yield file_model_1.default.create({
+        const newFile = await fileModel.create({
             file_url: result.secure_url,
             file_name: file.originalname,
             user: id
@@ -63,13 +49,13 @@ router.post('/upload-file', auth_1.default, uploader.single('file'), (req, res) 
         console.error('Error uploading file:', error);
         return res.status(500).json({ errors: error.message });
     }
-}));
-router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+});
+router.get('/download/:url', auth, async (req, res) => {
     try {
         const loggedInUser = req.user.userId;
         const fileUrl = req.params.url;
         // Find the file in the database
-        const file = yield file_model_1.default.findOne({
+        const file = await fileModel.findOne({
             user: loggedInUser,
             file_url: fileUrl
         });
@@ -80,7 +66,7 @@ router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, voi
             });
         }
         // Fetch the file from the remote server (e.g., Cloudinary)
-        const response = yield axios_1.default.get(file.file_url, { responseType: 'stream' });
+        const response = await axios.get(file.file_url, { responseType: 'stream' });
         // Set headers for file download
         res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
         res.setHeader('Content-Type', response.headers['content-type']);
@@ -98,7 +84,7 @@ router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, voi
     catch (error) {
         console.error('Error during file download:', error);
         // Handle Axios-specific errors
-        if (axios_1.default.isAxiosError(error)) {
+        if (axios.isAxiosError(error)) {
             return res.status(500).json({
                 success: false,
                 message: 'Error fetching the file from the remote server.',
@@ -111,5 +97,5 @@ router.get('/download/:url', auth_1.default, (req, res) => __awaiter(void 0, voi
             message: 'An unexpected error occurred while processing your request.',
         });
     }
-}));
-exports.default = router;
+});
+export default router;

@@ -1,5 +1,5 @@
 
-import catcherror from "../utils/catcherror";
+import catcherror from "../utils/catcherror.js";
 import z from "zod"
 
 const registerSchema = z.object({

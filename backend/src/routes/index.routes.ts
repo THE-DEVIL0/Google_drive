@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
-import uploadFile from '../config/upload';
-import fileModel from '../models/file.model';
-import auth from '../middlewares/auth';
-import axios from 'axios';
+import uploadFile from '../config/upload.js';
+import fileModel from '../models/file.model.js';
+import auth from '../middlewares/auth.js';
+import axios from "axios"
 
 interface CustomRequest extends Request{
     user?: any

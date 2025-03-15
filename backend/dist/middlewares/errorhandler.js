@@ -1,22 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const https_1 = require("../constants/https");
-const zod_1 = require("zod");
+import { BadRequest, InternalServerError } from "../constants/https.js";
+import { z } from "zod";
 const handleZodError = (error, res) => {
     const errors = error.errors.map(err => ({
         path: err.path.join("."),
         message: err.message
     }));
-    return res.status(https_1.BadRequest).json({
+    return res.status(BadRequest).json({
         message: error.message,
         errors
     });
 };
-const errorHanlder = (error, req, res, next, errorType) => {
+const errorHandler = (error, req, res, next, errorType) => {
     console.log(`Path: ${req.path} , Error ${error.name} , Message: ${error.message}`);
-    if (error instanceof zod_1.z.ZodError) {
+    if (error instanceof z.ZodError) {
         return handleZodError(error, res);
     }
-    res.status(errorType || https_1.InternalServerError);
+    res.status(errorType || InternalServerError);
 };
-exports.default = errorHanlder;
+export default errorHandler;

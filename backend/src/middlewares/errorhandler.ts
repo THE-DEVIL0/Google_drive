@@ -1,8 +1,8 @@
 import { ErrorRequestHandler } from "express";
-import { BadRequest, InternalServerError } from "../constants/https";
+import { BadRequest, InternalServerError } from "../constants/https.js";
 import { z } from "zod";
 
-const handleZodError = (error:z.ZodError ,res)=>{
+const handleZodError = (error:z.ZodError ,res:any)=>{
     const errors = error.errors.map(err=>({
         path:err.path.join("."),
         message: err.message
@@ -14,7 +14,7 @@ return res.status(BadRequest).json({
 }
 
 
-const errorHanlder: ErrorRequestHandler= (error, req, res, next , errorType?) => {
+const errorHandler: ErrorRequestHandler= (error, req, res, next , errorType?:any) => {
 
     console.log(`Path: ${req.path} , Error ${error.name} , Message: ${error.message}`);
     if(error instanceof z.ZodError){
@@ -24,4 +24,4 @@ const errorHanlder: ErrorRequestHandler= (error, req, res, next , errorType?) =>
 
 }
 
-export default errorHanlder
+export default errorHandler

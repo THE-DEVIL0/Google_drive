@@ -1,6 +1,6 @@
 
 import mongoose from "mongoose";
-import { comparePassoword, hashPassword } from "../utils/bycrypt";
+import { comparePassoword, hashPassword } from "../utils/bycrypt.js";
 
 export interface UserDocument extends mongoose.Document{
     username: string;

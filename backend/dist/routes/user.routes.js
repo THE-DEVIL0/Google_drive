@@ -4,7 +4,6 @@ import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { registerController } from '../Controllers/registerController.js';
-import { sendOTPToEmail, verifyOTP } from '../Controllers/otpverification.js';
 const router = express.Router();
 router.get('/auth', (req, res) => {
     res.render('auth');
@@ -52,9 +51,9 @@ router.post('/login', body('username').trim().isLength({ min: 3 }).withMessage('
         });
     }
 });
-router.get("/verify", (req, res) => {
-    res.render("verify", { error: null });
-});
-router.post("/send-otp", sendOTPToEmail);
-router.post("/verify-otp", verifyOTP);
+// router.get("/verify", (req, res) => {
+//     res.render("verify", { error: null });
+//   });
+//   router.post("/send-otp", sendOTPToEmail);
+// router.post("/verify-otp", verifyOTP);
 export default router;

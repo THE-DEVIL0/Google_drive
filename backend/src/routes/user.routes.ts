@@ -7,30 +7,21 @@ import { registerController } from '../Controllers/registerController.js';
 
 const router = express.Router();
 
-router.get('/register', (req: Request, res: Response) => {
-    res.render('Sign_in/register');
+router.get('/auth', (req: Request, res: Response) => {
+    res.render('auth');
 });
 
 router.post('/register',
     registerController,
     async (req: Request, res: Response) => {
        
-        const { username, email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newUser = await userModel.create({
-            username,
-            email,
-            password: hashedPassword
-        });
+       
 
         res.send("User Registered");
     }
 );
 
-router.get('/login', (req: Request, res: Response) => {
-    res.render('Sign_in/login');
-});
+
 
 router.post('/login',
     body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),

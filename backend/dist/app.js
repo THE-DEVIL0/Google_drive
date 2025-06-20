@@ -9,6 +9,7 @@ import indexRouter from "./routes/index.routes.js"; // Add `.js` if using ES Mod
 import cors from "cors";
 import getenv from "./constants/env.js";
 import errorHandler from "./middlewares/errorhandler.js";
+import favicon from "serve-favicon";
 // Configuring environment variables
 dotenv.config();
 // Manually define __dirname for ES Modules
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../../backend/src/views"));
 app.use(express.static(path.join(__dirname, "../../public")));
+app.use(favicon(path.join(__dirname, '../../public', 'favicon.ico')));
 // Routes
 app.use("/user", userRouter);
 app.use("/", indexRouter);

@@ -15,6 +15,9 @@ router.get('/privacy', (req, res) => {
 router.get('/terms', (req, res) => {
     res.render('Legal/terms');
 });
+router.get('/practice', (req, res) => {
+    res.render('practice');
+});
 router.get('/home', auth, async (req, res) => {
     const userFiles = await fileModel.find({
         user: req.user.userId

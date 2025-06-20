@@ -5,106 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CloudKeep</title>
     <link href="/output.css" rel="stylesheet">
-   <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet">
+    
+
+   
 </head>
-<body class=" bg-slate-800" >
+<body class="bg-slate-800 text-white">
     <header>
        <%- include("Reuse/Navbar") %>
     </header>
-
-
-
-    <main class="pt-20">
-
-        <section id="Home">
-            <div>
-                <button id="open-register"  class=" text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
-                     Register User
-                    </button>
-                </div>
-                <div>
-                    <button  id="open-login"  class=" text-white m-5 bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 me-2 mb-2">
-                         Login
-                        </button>
-                    </div>
-        </section>
-
-
-        <section id="About">
-            
-        </section>
-
-        <section id="Pricing">
-
-        </section>
-        
-        </main>
-        <div id="login-modal" class="hidden fixed inset-0 items-center justify-center bg-black bg-opacity-50 ">
-            </div>
-            <div id="register-modal" class="hidden fixed inset-0 items-center justify-center bg-black bg-opacity-50 ">
-        </div>
-
-
-
     
-        
+    <main class="pt-20 flex flex-col items-center text-center px-6">
+        <!-- Website Name -->
+        <h1 class="text-4xl font-bold text-gray-200">CloudKeep </h1>
+        <p class="mt-4 text-lg text-gray-300 max-w-2xl">
+            Securely store, manage, and access your data anytime, anywhere with CloudKeep. 
+            Your personal cloud solution with top-notch security and seamless experience.
+        </p>
 
+       
 
-    
-
-<footer>
-    <%- include("Reuse/Footer") %>
-</footer>
-  
-      
-
-
+        <!-- Features Section -->
+        <section id="Features" class="mt-10 w-full max-w-4xl">
+            <h2 class="text-2xl font-semibold text-gray-100 border-b pb-2 border-gray-500">Features</h2>
+            <ul class="mt-4 space-y-4 text-gray-300">
+                <li class="flex items-center gap-2">
+                    ✅ <span>End-to-End Encryption for maximum security</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    ✅ <span>Cross-platform accessibility from any device</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    ✅ <span>Fast and efficient file uploads and retrieval</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    ✅ <span>Easy sharing and collaboration tools</span>
+                </li>
+                <li class="flex items-center gap-2">
+                    ✅ <span>Reliable cloud storage with automated backups</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer class="mt-10">
+        <%- include("Reuse/Footer") %>
+    </footer>
 
    
 
 
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>    
-        <script>
-            const loginModal = document.getElementById("login-modal");
-    const openLoginButton = document.getElementById("open-login");
 
-    openLoginButton.addEventListener("click", async () => {
-        const response = await fetch('/user/login'); // Load the login.ejs file
-        const html = await response.text();
-        loginModal.innerHTML = html;
-        loginModal.classList.remove("hidden");
-        loginModal.classList.add("flex");
 
-        // Close Modal on click outside
-        loginModal.addEventListener("click", (e) => {
-            if (e.target === loginModal ) {
-                loginModal.classList.add("hidden");
-                loginModal.classList.remove("flex");
-                loginModal.innerHTML = ""; // Clear the modal content
-            }
-        });
-    }); 
+    
 
-    const registerModal = document.getElementById("register-modal");
-    const openRegisterButton = document.getElementById("open-register");
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>    
 
-    openRegisterButton.addEventListener("click", async () => {
-        const response = await fetch('/user/register'); // Load the login.ejs file
-        const html = await response.text();
-        registerModal.innerHTML = html;
-        registerModal.classList.remove("hidden");
-        registerModal.classList.add("flex");
+    
 
-        // Close Modal on click outside
-        registerModal.addEventListener("click", (e) => {
-            if (e.target === registerModal ) {
-                registerModal.classList.add("hidden");
-                regiserModal.classList.remove("flex");
-                registerModal.innerHTML = ""; // Clear the modal content
-            }
-        });
-    }); 
+            
 
-        </script>
+
+           
+    
+          
 </body>
 </html>

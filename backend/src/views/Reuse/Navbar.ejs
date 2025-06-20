@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar</title>
+    
     <link href="/output.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
     <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-1 px-4">
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="images/CloudKeep_logo_with_a_key_symbolizing_security_and_storage-removebg-preview.png" 
+                <img src="images/logo.png" 
                      alt="CloudKeep logo" class="w-16 h-16">
                 <span class="self-center text-3xl font-bold tracking-wide text-gray-900 dark:text-white">
                     Cloud<span class="text-blue-600 dark:text-blue-500">Keep</span>
@@ -19,8 +19,8 @@
             </div>
             <!-- Get Started Button -->
             <div class="flex md:order-2">
-                <button onclick="location.href='/user/login'" 
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button onclick="location.href='/user/auth'" 
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="startedBtn">
                     Get started
                 </button>
                 <button data-collapse-toggle="navbar-sticky" type="button" 

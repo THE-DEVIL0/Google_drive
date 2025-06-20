@@ -5,21 +5,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { registerController } from '../Controllers/registerController.js';
 const router = express.Router();
-router.get('/register', (req, res) => {
-    res.render('Sign_in/register');
+router.get('/auth', (req, res) => {
+    res.render('auth');
 });
 router.post('/register', registerController, async (req, res) => {
-    const { username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await userModel.create({
-        username,
-        email,
-        password: hashedPassword
-    });
     res.send("User Registered");
-});
-router.get('/login', (req, res) => {
-    res.render('Sign_in/login');
 });
 router.post('/login', body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), body('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), async (req, res) => {
     try {

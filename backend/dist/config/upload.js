@@ -9,10 +9,9 @@ cloudinary.config({
 const uploadFile = async (filePath) => {
     try {
         const result = await cloudinary.uploader.upload(filePath, {
-            resource_type: 'auto', // Automatically detect the file type (image, video, raw)
+            resource_type: 'auto',
             unique_filename: true
         });
-        console.log(result);
         return result;
     }
     catch (error) {

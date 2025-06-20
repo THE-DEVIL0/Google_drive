@@ -4,6 +4,7 @@ import uploadFile from '../config/upload.js';
 import fileModel from '../models/file.model.js';
 import auth from '../middlewares/auth.js';
 import axios from "axios";
+import { v2 as cloudinary } from 'cloudinary';
 const uploader = multer({ storage: multer.diskStorage({}) });
 const router = express.Router();
 router.get('/', (req, res) => {
@@ -42,22 +43,20 @@ router.post('/upload-file', auth, uploader.single('file'), async (req, res) => {
             file_name: file.originalname,
             user: id
         });
-        return res.status(200).json({
-            success: true,
-            msg: "File uploaded successfully",
-            url: newFile
-        });
+        res.redirect('/home');
     }
     catch (error) {
         console.error('Error uploading file:', error);
         return res.status(500).json({ errors: error.message });
     }
 });
-router.get('/download/:url', auth, async (req, res) => {
+router.get('/download', auth, async (req, res) => {
     try {
         const loggedInUser = req.user.userId;
-        const fileUrl = req.params.url;
-        // Find the file in the database
+        const fileUrl = req.query.url;
+        if (!fileUrl) {
+            return res.status(400).json({ message: 'Missing file URL' });
+        }
         const file = await fileModel.findOne({
             user: loggedInUser,
             file_url: fileUrl
@@ -68,25 +67,30 @@ router.get('/download/:url', auth, async (req, res) => {
                 message: "File not found or unauthorized access."
             });
         }
-        // Fetch the file from the remote server (e.g., Cloudinary)
-        const response = await axios.get(file.file_url, { responseType: 'stream' });
-        // Set headers for file download
+        // ✅ If the file is a PDF and wrongly stored in /image/, fix to /raw/
+        let actualFileUrl = file.file_url;
+        if (file.file_url.includes('/image/upload/') &&
+            file.file_name.toLowerCase().endsWith('.pdf')) {
+            actualFileUrl = file.file_url.replace('/image/upload/', '/raw/upload/');
+        }
+        const cloudinaryResponse = await axios.get(actualFileUrl, {
+            responseType: 'stream'
+        });
         res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
-        res.setHeader('Content-Type', response.headers['content-type']);
-        // Stream the file to the client
-        response.data.pipe(res);
-        // Handle stream errors
-        response.data.on('error', (streamError) => {
+        res.setHeader('Content-Type', cloudinaryResponse.headers['content-type'] || 'application/octet-stream');
+        cloudinaryResponse.data.pipe(res);
+        cloudinaryResponse.data.on('error', (streamError) => {
             console.error('Stream error:', streamError);
-            return res.status(500).json({
-                success: false,
-                message: 'Error occurred while streaming the file.'
-            });
+            if (!res.headersSent) {
+                res.status(500).json({
+                    success: false,
+                    message: 'Error occurred while streaming the file.'
+                });
+            }
         });
     }
     catch (error) {
         console.error('Error during file download:', error);
-        // Handle Axios-specific errors
         if (axios.isAxiosError(error)) {
             return res.status(500).json({
                 success: false,
@@ -94,11 +98,42 @@ router.get('/download/:url', auth, async (req, res) => {
                 details: error.message
             });
         }
-        // Generic fallback for unexpected errors
         return res.status(500).json({
             success: false,
             message: 'An unexpected error occurred while processing your request.',
         });
     }
+});
+router.post('/delete', auth, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const fileUrl = req.body.url;
+        if (!fileUrl) {
+            return res.status(400).json({ message: 'Missing file URL' });
+        }
+        const file = await fileModel.findOne({ user: userId, file_url: fileUrl });
+        if (!file) {
+            return res.status(404).json({ message: 'File not found or unauthorized.' });
+        }
+        // Extract public_id from URL
+        const fileName = file.file_url.split('/').pop()?.split('.')[0]; // without extension
+        const isRaw = ['pdf', 'docx', 'zip'].includes(file.file_name.split('.').pop()?.toLowerCase() || '');
+        const resourceType = isRaw ? 'raw' : 'image';
+        // Delete from Cloudinary
+        await cloudinary.uploader.destroy(`upload/${fileName}`, {
+            resource_type: resourceType,
+        });
+        // Delete from MongoDB
+        await fileModel.deleteOne({ _id: file._id });
+        res.redirect('/home');
+    }
+    catch (err) {
+        console.error('Delete error:', err);
+        res.status(500).json({ message: 'Error deleting file.' });
+    }
+});
+router.post('/logout', (req, res) => {
+    res.clearCookie('token'); // Clear JWT cookie
+    res.redirect('/');
 });
 export default router;

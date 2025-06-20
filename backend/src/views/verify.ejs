@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verify OTP</title>
+  <link href="/output.css" rel="stylesheet" />
+</head>
+<body class="bg-slate-800 flex items-center justify-center min-h-screen">
+  <div class="bg-slate-700 p-8 rounded shadow-md w-full max-w-md">
+    <h2 class="text-2xl text-center text-white mb-4">Email Verification</h2>
+
+    <% if (error) { %>
+        <p class="text-red-500 text-center mb-4"><%= error %></p>
+      <% } %>
+      
+
+    <!-- ✅ Success Message Placeholder -->
+    <p id="otp-msg" class="text-green-400 text-center mb-4"></p>
+
+    <form action="/user/verify-otp" method="POST" class="space-y-4">
+      <input type="hidden" name="userId" value="<%= userId %>"/>
+      <input type="text" name="code" placeholder="Enter 4-digit OTP" class="w-full p-2 rounded" required />
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded">Verify</button>
+    </form>
+  </div>
+
+  <!-- ✅ Script to send OTP and show message -->
+  <script>
+    const email = new URLSearchParams(window.location.search).get('email');
+    const userId = document.querySelector('input[name="userId"]').value;
+  
+    if (email && userId) {
+      fetch('/user/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, userId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("otp-msg").innerText = "OTP sent to your email.";
+      })
+      .catch(err => {
+        document.getElementById("otp-msg").innerText = "Failed to send OTP. Please refresh.";
+        document.getElementById("otp-msg").classList.replace("text-green-400", "text-red-400");
+      });
+    }
+  </script>
+  
+</body>
+</html>

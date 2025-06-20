@@ -7,6 +7,9 @@ export interface verificationCodeDocument extends mongoose.Document{
     type:  VerificatoinCodeType;
     createdat : Date;
     expiresat: Date;
+    code : string;
+    attemptsLeft: number
+
 
 }
 
@@ -29,7 +32,15 @@ const VerificatoinCodeSchema = new mongoose.Schema<verificationCodeDocument>({
     expiresat:{
         type: Date,
         required: true,
-    }
+    },
+    code: {
+        type: String,
+        required: true,
+      },
+      attemptsLeft: {
+        type: Number,
+        default: 3,
+      },
 })
 
 const VerificatoinCodeModel = mongoose.model<verificationCodeDocument>(

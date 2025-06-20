@@ -16,7 +16,7 @@ const getAccessTokenCookieOptions = (): CookieOptions => ({
 const refreshTokenCookieOptions = (): CookieOptions => ({
   ...defaults,
   expires: thirtyDaysFromNow(),
-  path: "/register/refresh",
+  path: "/",
 });
 type Params = {
   res: Response;

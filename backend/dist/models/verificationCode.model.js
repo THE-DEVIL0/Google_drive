@@ -18,7 +18,15 @@ const VerificatoinCodeSchema = new mongoose.Schema({
     expiresat: {
         type: Date,
         required: true,
-    }
+    },
+    code: {
+        type: String,
+        required: true,
+    },
+    attemptsLeft: {
+        type: Number,
+        default: 3,
+    },
 });
 const VerificatoinCodeModel = mongoose.model("VerificationCode", VerificatoinCodeSchema, "Verificatoin_codes");
 export default VerificatoinCodeModel;

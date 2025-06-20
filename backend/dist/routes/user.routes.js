@@ -4,12 +4,13 @@ import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { registerController } from '../Controllers/registerController.js';
+import { sendOTPToEmail, verifyOTP } from '../Controllers/otpverification.js';
 const router = express.Router();
 router.get('/auth', (req, res) => {
     res.render('auth');
 });
-router.post('/register', registerController, async (req, res) => {
-    res.send("User Registered");
+router.post('/register', registerController, (req, res) => {
+    res.redirect('auth');
 });
 router.post('/login', body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'), body('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'), async (req, res) => {
     try {
@@ -51,4 +52,9 @@ router.post('/login', body('username').trim().isLength({ min: 3 }).withMessage('
         });
     }
 });
+router.get("/verify", (req, res) => {
+    res.render("verify", { error: null });
+});
+router.post("/send-otp", sendOTPToEmail);
+router.post("/verify-otp", verifyOTP);
 export default router;

@@ -10,4 +10,19 @@
  export const Conflict = 409;
  export const UnprocessableEntity = 422;
  export const TooManyRequests = 429;
+
+ export type HttpsStatusCode = 
+    | typeof OK 
+    | typeof Created
+    | typeof BadRequest
+    | typeof Unauthorized
+    | typeof Forbidden
+    | typeof NotFound
+    | typeof InternalServerError
+    | typeof NotImplemented
+    | typeof ServiceUnavailable
+    | typeof Conflict
+    | typeof UnprocessableEntity
+    | typeof TooManyRequests;
+    
  

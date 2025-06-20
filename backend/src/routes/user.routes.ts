@@ -4,6 +4,7 @@ import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { registerController } from '../Controllers/registerController.js';
+import { sendOTPToEmail, verifyOTP } from '../Controllers/otpverification.js';
 
 const router = express.Router();
 
@@ -13,13 +14,12 @@ router.get('/auth', (req: Request, res: Response) => {
 
 router.post('/register',
     registerController,
-    async (req: Request, res: Response) => {
-       
-       
-
-        res.send("User Registered");
-    }
-);
+    (req: Request, res: Response) => {
+      res.redirect('auth')
+      });
+  
+  
+  
 
 
 
@@ -75,5 +75,14 @@ router.post('/login',
         }
     }
 );
+
+
+// router.get("/verify", (req, res) => {
+//     res.render("verify", { error: null });
+//   });
+
+//   router.post("/send-otp", sendOTPToEmail);
+// router.post("/verify-otp", verifyOTP);
+
 
 export default router;

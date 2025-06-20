@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
@@ -11,11 +12,15 @@ cloudinary.config({
 
 const uploadFile = async (filePath: string) => {
     try {
+        const ext = path.extname(filePath).toLowerCase();
+        const isImage = ['.png', '.jpg', '.jpeg', '.webp', '.gif'].includes(ext);
+        const resourceType = isImage ? 'image' : 'raw';
+
         const result = await cloudinary.uploader.upload(filePath, {
-            resource_type: 'auto', 
+            resource_type: resourceType,
             unique_filename: true
         });
-       
+
         return result;
     } catch (error) {
         console.error('Error uploading file to Cloudinary:', error);

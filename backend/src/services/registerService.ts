@@ -5,6 +5,8 @@ import userModel from "../models/user.model.js"
 import VerificatoinCodeModel from "../models/verificationCode.model.js"
 import { oneDayFromNow } from "../utils/date.js"
 import getenv from "../constants/env.js"
+import appAssert from "../utils/appAssert.js"
+import { Conflict } from "../constants/https.js"
 
 export type CreateAccountParams = {
     username: string,
@@ -16,14 +18,12 @@ export type CreateAccountParams = {
 
 
 export const CreateAccount = async (data:CreateAccountParams)=>{
-    const existingUser = await userModel.exists({
-        email: data.email,
-        username: data.username
-    })
+    const existingUser = await userModel.findOne({
+        $or: [{ email: data.email }, { username: data.username }]
+      });
+      
 
-    if(existingUser){
-        throw new Error("This email or username is already in use")
-    }
+   appAssert(!existingUser , Conflict, "username or email already exists")
 
     const user = await userModel.create({
         username : data.username,
@@ -31,11 +31,15 @@ export const CreateAccount = async (data:CreateAccountParams)=>{
         password: data.password
     })
 
-    const verificationCode = await VerificatoinCodeModel.create({
-        userId : user._id,
-        type : VerificatoinCodeType.EmailVerification,
-        expiresat: oneDayFromNow() ,
-    }) 
+    const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+const verificationCode = await VerificatoinCodeModel.create({
+  userId: user._id,
+  code: otpCode,
+  type: VerificatoinCodeType.EmailVerification,
+  expiresat: oneDayFromNow(),
+  attemptsLeft: 3
+});
 
 
     const session = await sessionModel.create({
@@ -46,7 +50,7 @@ export const CreateAccount = async (data:CreateAccountParams)=>{
     const refreshToken = jwt.sign(
         {sessionId : session._id},
         getenv("JWT_SECRET"),
-        {audience:["user"],
+        {audience:"user",
             expiresIn: "30d"
         }
     )

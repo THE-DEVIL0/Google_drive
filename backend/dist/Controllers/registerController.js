@@ -1,4 +1,3 @@
-import { Created } from "../constants/https.js";
 import { CreateAccount } from "../services/registerService.js";
 import catcherror from "../utils/catcherror.js";
 import z from "zod";
@@ -13,12 +12,13 @@ const registerSchema = z.object({
     message: "Password and Confirm Password mut be same",
     path: ["confirmPassword"]
 });
-export const registerController = catcherror(async (req, res) => {
+export const registerController = catcherror(async (req, res, next) => {
     const request = registerSchema.parse({
         ...req.body,
-        userAgent: req.headers["user-agent"]
+        userAgent: req.headers["user-agent"],
     });
     const { user, accessToken, refreshToken } = await CreateAccount(request);
     setAuthCookies({ res, accessToken, refreshToken });
-    res.status(Created).json(user);
+    res.locals.user = user; // ✅ Pass user to next handler
+    next(); // ✅ Continue to next middleware
 });

@@ -12,7 +12,7 @@ const getAccessTokenCookieOptions = () => ({
 const refreshTokenCookieOptions = () => ({
     ...defaults,
     expires: thirtyDaysFromNow(),
-    path: "/register/refresh",
+    path: "/",
 });
 export const setAuthCookies = ({ res, accessToken, refreshToken }) => {
     res
